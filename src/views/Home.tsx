@@ -55,15 +55,22 @@ export default function Home(){
     const handleEditSubmit = (event:any) => {
         const editBar = event.target.parentNode.parentNode;
         const regBar = event.target.parentNode.parentNode.previousSibling;
-    
+        
         regBar.classList.remove('is-invisible');
         regBar.classList.add('is-visible');
         editBar.classList.remove('is-visible');
         editBar.classList.add('is-invisible');
 
-        const nodeId = Number(event.target.parentNode.parentNode.parentNode.getAttribute('id'));
-        console.log(nodeId)
-        tasks.filter((t)=>{if(t.id == nodeId){t.title = editTask.title}});
+        if (event.target.innerHTML == 'cancel'){
+            const node = event.target.parentNode.parentNode.previousSibling.children[0].innerHTML;
+            const nodeId = Number(event.target.parentNode.parentNode.parentNode.getAttribute('id'));
+            let initTask:Task = {id:nodeId, title:node};
+            tasks.filter((t)=>{if(t.id == nodeId){t.title = initTask.title}});
+        }else{
+            const nodeId = Number(event.target.parentNode.parentNode.parentNode.getAttribute('id'));
+            console.log(nodeId)
+            tasks.filter((t)=>{if(t.id == nodeId){t.title = editTask.title}});
+        }
         editTask.title = ''
         setTasks(tasks)
         setNewTask({id: tasks.length + 2, title: ''})

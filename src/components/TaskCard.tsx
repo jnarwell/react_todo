@@ -36,7 +36,7 @@ export default function TaskCard({ task, handleEdit, handleDelete, handleEditSub
                 </Card.Title>
                 <div>
                     <Button onClick={handleEditSubmit} className='me-1 btn-secondary'>submit</Button>
-                    <Button className='btn-danger'>cancel</Button>
+                    <Button onClick={handleEditSubmit} className='btn-danger'>cancel</Button>
                 </div>
             </Card.Body>
         </Card>

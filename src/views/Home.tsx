@@ -1,13 +1,19 @@
 import { useState } from "react";
 import TaskCard from "../components/TaskCard";
 import TaskForm from "../components/TaskForm";
+import CategoryType from '../types/category';
+
 
 type Task = {
     id:number,
     title:string
 }
 
-export default function Home(){
+type HomeProps = {
+    flashMessage: (message:string|null, category: CategoryType|null) => void
+}
+
+export default function Home({ flashMessage }: HomeProps){
     const name:string = 'Jamie';
     const [tasks, setTasks] = useState<Task[]>([]);
     const [newTask, setNewTask] = useState<Task>({id:1, title:''});
@@ -23,14 +29,20 @@ export default function Home(){
 
         setTasks([...tasks, newTask])
         setNewTask({id: tasks.length + 2, title: ''})
+        flashMessage(`${newTask.title} has been created`, 'success');
+
     }
 
     const handleDelete = (event:any) => {
         const nodeId = Number(event.target.parentNode.parentNode.parentNode.getAttribute('id'));
-        tasks.filter((t)=>{if(t.id == nodeId){tasks.splice(tasks.indexOf(t), 1)}});
+        tasks.filter((t)=>{if(t.id == nodeId){
+            tasks.splice(tasks.indexOf(t), 1)
+            flashMessage(`${t.title} has been deleted`, 'danger');
+        }});
         //tasks.map((t, id=1)=>{t.id=id;id++;})
         setTasks(tasks)
         setNewTask({id: tasks.length + 2, title: ''})
+
     }
 
     const handleEdit = (event: any) => {
@@ -66,10 +78,12 @@ export default function Home(){
             const nodeId = Number(event.target.parentNode.parentNode.parentNode.getAttribute('id'));
             let initTask:Task = {id:nodeId, title:node};
             tasks.filter((t)=>{if(t.id == nodeId){t.title = initTask.title}});
+            flashMessage(`${initTask.title}'s edit has been canceled`, 'danger');
         }else{
             const nodeId = Number(event.target.parentNode.parentNode.parentNode.getAttribute('id'));
             console.log(nodeId)
             tasks.filter((t)=>{if(t.id == nodeId){t.title = editTask.title}});
+            flashMessage(`${editTask.title} has been edited`, 'warning');
         }
         editTask.title = ''
         setTasks(tasks)

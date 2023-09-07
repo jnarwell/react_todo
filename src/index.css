@@ -9,3 +9,11 @@
 body{
   background-color: lightgray
 }
+
+.is-visible{
+  display: flex;
+}
+
+.is-invisible{
+  display: none;
+}
